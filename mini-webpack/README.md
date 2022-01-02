@@ -1,5 +1,23 @@
 # webpack 原理笔记
 
+```javascript
+module.exports = {
+  entry: './src/index.js',
+  output: {
+    filename: 'built.js',
+    path: resolve(\_\_dirname, 'build'),
+  },
+  resolve: {
+    modules: ['node_modules'], // 模块查找相对路径：相对路径参考 node 查找规则，绝对路径只在给定路径中查找
+    mainFields: ['module', 'main', 'testMain'], // ['browser', 'module', 'main']
+    mainFiles: ['yyy', 'xxx', 'index'], // ['index']
+    extensions: ['.js', '.json'], // ['.js', '.json']
+    enforceExtension: false, // 为 true 强制必须使用扩展名称
+  },
+  mode: 'production',
+};
+```
+
 ## 自定义 loaders
 
 **1. 执行顺序**

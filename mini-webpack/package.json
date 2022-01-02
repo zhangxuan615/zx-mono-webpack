@@ -1,16 +1,11 @@
 {
-  "name": "mini-webpack",
+  "name": "@zx/mini-webpack",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "yarn dev",
-    "dev": "cross-env NODE_ENV=development webpack serve --config ./configs/webpack.config.babel.js",
-    "build": "cross-env NODE_ENV=production webpack --config ./configs/webpack.config.babel.js",
-    "build:ana": "cross-env BUNDLE_ANNALYZE=analyze npm run build",
-    "dev:cjs": "webpack serve --config ./configs/webpack.dev.config.js",
-    "build:cjs": "webpack  --config ./configs/webpack.prod.config.js",
-    "prepare": "husky install"
+    "dev:p": "webpack --config ./webpack.config.js",
+    "build": "webpack "
   },
   "author": "",
   "license": "ISC",
@@ -19,9 +14,5 @@
     "loader-utils": "^2.0.0",
     "schema-utils": "^3.1.1",
     "tapable": "^2.2.0"
-  },
-  "workspaces": [
-    "mini-webpack",
-    "webpack-demo/*"
-  ]
+  }
 }

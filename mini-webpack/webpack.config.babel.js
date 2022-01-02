@@ -9,11 +9,14 @@ export default {
       {
         test: /\.js$/,
         use: [
+          // {
+          //   loader: 'babelLoader',
+          //   options: {
+          //     presets: ['@babel/preset-env']
+          //   }
+          // }
           {
-            loader: 'babelLoader',
-            options: {
-              presets: ['@babel/preset-env']
-            }
+            loader: 'clearConsole'
           }
         ]
       }

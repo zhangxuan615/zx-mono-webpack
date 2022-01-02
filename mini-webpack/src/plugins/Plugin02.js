@@ -27,8 +27,8 @@ class Plugin02 {
         };
 
         const data = await readFile(path.resolve(__dirname, 'x.txt'));
-        // 两种方式等价
-        // compilation.assets["b.txt"] = new RawSource(data);
+        // 两种方式等价：输出文件资源
+        // compilation.assets['b.txt'] = new RawSource(data);
         compilation.emitAsset('c.txt', new RawSource(data));
 
         cb();
