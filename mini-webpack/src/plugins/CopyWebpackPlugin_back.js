@@ -1,10 +1,15 @@
 const { validate } = require('schema-utils');
+const schema = require('./schema.json');
 const globby = require('globby');
 const path = require('path');
-const { readFile } = require('fs/promises');
-const { RawSource } = require('webpack').sources;
+const fs = require('fs');
+const { promisify } = require('util');
+const webpack = require('webpack');
 
-const schema = require('./schema.json');
+// 将 回调异步 转换为 promise异步
+const readFile = promisify(fs.readFile);
+
+const { RawSource } = webpack.sources;
 
 class CopyWebpackPlugin {
   constructor(options = {}) {
@@ -12,7 +17,6 @@ class CopyWebpackPlugin {
     validate(schema, options, {
       name: 'CopyWebpackPlugin'
     });
-
     this.options = options;
   }
 
@@ -21,18 +25,14 @@ class CopyWebpackPlugin {
     compiler.hooks.thisCompilation.tap('CopyWebpackPlugin', async compilation => {
       // 添加资源的 hooks
       compilation.hooks.additionalAssets.tapAsync('CopyWebpackPlugin', async cb => {
-        /**
-         * 1. 读取 from 中的所有资源
-         * 2. 过滤掉 ignore 的文件
-         * 3. 生成 webpack 格式的资源
-         * 4. 添加 compilation 中，输出出去
-         */
+        // 将 from 中的资源复制到 to 中，输出出去
+        const { from, ignore } = this.options;
+        const to = this.options.to ? this.options.to : '.';
         // 1. 读取 from 中的所有资源，globby(要处理的文件夹，options)
-        const { from, to = './', ignore } = this.options;
         // 运行指令的目录
-        const contextPath = compiler.options.context;
+        const context = compiler.options.context;
         // 将输入路径变成绝对路径
-        let absoluteFrom = path.isAbsolute(from) ? from : path.join(contextPath, from);
+        let absoluteFrom = path.isAbsolute(from) ? from : path.resolve(context, from);
         absoluteFrom = absoluteFrom.replace(/\\/g, '/');
         // 过滤掉 ignore 的文件
         const paths = await globby(absoluteFrom, { ignore });
@@ -63,7 +63,6 @@ class CopyWebpackPlugin {
             fileName: file.fileName
           };
         });
-
         // 4. 添加 compilation 中，输出出去
         assets.forEach(asset => {
           compilation.emitAsset(asset.fileName, asset.source);

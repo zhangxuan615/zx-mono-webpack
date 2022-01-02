@@ -1,15 +1,15 @@
 {
-    "type": "object",
-    "properties": {
-        "from": {
-            "type": "string"
-        },
-        "to": {
-            "type": "string"
-        },
-        "ignore": {
-            "type": "array"
-        }
+  "type": "object",
+  "properties": {
+    "from": {
+      "type": "string"
     },
-    "additionalProperties": false
+    "to": {
+      "type": "string"
+    },
+    "ignore": {
+      "type": "array"
+    }
+  },
+  "additionalProperties": false
 }
